@@ -109,14 +109,15 @@ public class SavingAccountTest {
      * !!! руками без нужды не лазить java сама всё посчитат !!!
      */
 
-    @Test   //  Нужен баг репорт (строка 73 неверная формула)
+    @Test
     public void addAmount() {
         if (initialBalance >= maxBalance) maxBalance = initialBalance + 1_000;
+        int digit = 1;
 
         SavingAccount account = new SavingAccount(initialBalance, minBalance, maxBalance, rate);
 
-        int expected = account.getBalance() + 1;
-        account.add(1);
+        int expected = account.getBalance() + digit;
+        account.add(digit);
 
         Assertions.assertEquals(expected, account.getBalance());
     }   // Увеличение баланса счета
@@ -145,7 +146,7 @@ public class SavingAccountTest {
         Assertions.assertEquals(expected, account.pay(digit));
     }   // Нижняя граница минимального баланса
 
-    @Test   //  Нужен баг репорт (строка 49 условие if не содержит знака =)
+    @Test
     public void payAmountMinBalance() {
         if (initialBalance <= minBalance) initialBalance = minBalance + 1_000;
 
@@ -181,7 +182,7 @@ public class SavingAccountTest {
         Assertions.assertEquals(expected, account.add(digit));
     }   // Нижняя граница максимального баланса
 
-    @Test   //  Нужен баг репорт (строка 72 условие if не содержит знака =)
+    @Test
     public void addAmountMaxBalance() {
         if (initialBalance >= maxBalance) maxBalance = initialBalance + 1_000;
 
@@ -205,7 +206,7 @@ public class SavingAccountTest {
         Assertions.assertEquals(expected, account.add(digit));
     }   // Верхняя граница максимального баланса
 
-    @Test   //  Нужен баг репорт (return неверная формула)
+    @Test
     public void yearPercent() {
         if (minBalance == maxBalance || minBalance > maxBalance || (maxBalance - minBalance) < 1000) {
             minBalance = 0;
