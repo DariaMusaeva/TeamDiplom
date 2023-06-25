@@ -192,6 +192,19 @@ public class CreditAccountTest {
         Assertions.assertEquals(-2_250, account.yearChange());
     }
 
+    @Test
+    public void shouldCalculateRateWithOtherRate() {
+        CreditAccount account = new CreditAccount(
+                -15_000,
+                15_000,
+                13
+        );
+
+        account.yearChange();
+
+        Assertions.assertEquals(-1_800, account.yearChange());
+    }
+
 //    @Test
 //    public void shouldNotCalculateRateWithNegativeRate() {
 //        CreditAccount account = new CreditAccount(
@@ -205,7 +218,7 @@ public class CreditAccountTest {
 //        Assertions.assertThrows(IllegalArgumentException.class, () -> {
 //        account.yearChange();
 //        }); // тест не проходит
-//    }
+//    } // не должен считать при отрицательной ставке
 
     @Test
     public void shouldNotCalculateWithPositiveBalance() {
