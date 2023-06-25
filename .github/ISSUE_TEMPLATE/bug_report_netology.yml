@@ -1,5 +1,5 @@
-name: 🐞 Bug report of Netology rules
-description: Шаблон - "Баг репорт" для использования в Issues GitHub, по правилам Нетологии.
+name: 🐞 Bug report of Netology rules (yml)
+description: Шаблон - "Баг репорт" для использования в Issues GitHub, по правилам Нетологии, в формате yml.
 title: "[BUG]: <title>"  
 labels: [Bug]
 
