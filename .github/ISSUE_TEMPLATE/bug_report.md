@@ -1,8 +1,8 @@
 ---
-name: Bug report
-about: Баг-репорт по правилам "Нетологии"
-title: ''
-labels: bug
+name: Bug report (заполняется в фале)
+about: Шаблон - "Баг репорт" для использования в Issues GitHub, по правилам Нетологии, в формате .MD
+title:  "[BUG]: <title>"
+labels: [BUG]
 assignees: Dmitry-A-K, DariaMusaeva
 
 ---
