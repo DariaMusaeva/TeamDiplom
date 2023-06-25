@@ -1,4 +1,4 @@
-name: 🐞 Bug report of Netology rules (yml)
+name: 🐞 Bug report of Netology rules (yml) (заполняется формой)
 description: Шаблон - "Баг репорт" для использования в Issues GitHub, по правилам Нетологии, в формате yml.
 title: "[BUG]: <title>"  
 labels: [Bug]
