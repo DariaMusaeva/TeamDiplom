@@ -94,8 +94,8 @@ public class CreditAccountTest {
 
         account.pay(5_000);
 
-        Assertions.assertEquals(4_000, account.getBalance());
-    } // не должен менять баланс, если списание больше баланса
+        Assertions.assertEquals(-1_000, account.getBalance());
+    } // баланс должен уйти в отрицательное значение
 
     @Test
     public void paymentShouldBeSuccessfulWithEmptyBalance() {
@@ -108,7 +108,7 @@ public class CreditAccountTest {
         account.pay(5_000);
 
         Assertions.assertEquals(-5_000, account.getBalance());
-    } // списание должно проходить, если изначальный баланс 0
+    }
 
     @Test
     public void paymentShouldBeSuccessfulWithEmptyAmount() {
@@ -134,7 +134,7 @@ public class CreditAccountTest {
         account.pay(15_000);
 
         Assertions.assertEquals(0, account.getBalance());
-    } // должен списать весь лимит до 0
+    } // должен списать весь баланс до 0
 
     @Test
     public void shouldGetCreditLimit() {
