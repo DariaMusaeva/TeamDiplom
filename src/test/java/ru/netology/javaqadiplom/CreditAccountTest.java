@@ -149,20 +149,20 @@ public class CreditAccountTest {
         Assertions.assertEquals(15_000, account.getCreditLimit());
     }
 
-//    @Test
-//    public void shouldNotGetCreditLimitWithNegativeLimit() {
-//        CreditAccount account = new CreditAccount(
-//                15_000,
-//                -15_000,
-//                12
-//        );
-//
-//        account.getCreditLimit();
-//
-//        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-//            account.getCreditLimit();
-//        });
-//    } // тест не проходит
+    @Test
+    public void shouldNotGetCreditLimitWithNegativeLimit() {
+        CreditAccount account = new CreditAccount(
+                15_000,
+                -15_000,
+                12
+        );
+
+        account.getCreditLimit();
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            account.getCreditLimit();
+        });
+    } // тест не проходит
 
 //    @Test
 //    public void shouldNotGetCreditLimitWithEmptyRate() {
