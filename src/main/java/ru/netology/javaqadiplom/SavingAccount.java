@@ -19,10 +19,30 @@ public class SavingAccount extends Account {
      * @param maxBalance - максимальный баланс
      * @param rate - неотрицательное число, ставка в процентах годовых на остаток
      */
-    public SavingAccount(int initialBalance, int minBalance, int maxBalance, int rate) {
+    public SavingAccount(int initialBalance, int minBalance, int maxBalance, int rate) throws IllegalArgumentException {
         if (rate < 0) {
             throw new IllegalArgumentException(
-              "Накопительная ставка не может быть отрицательной, а у вас: " + rate
+                    "Накопительная ставка не может быть отрицательной, а у вас: " + rate
+            );
+        }
+        if (minBalance > maxBalance) {
+            throw new IllegalArgumentException(
+                    "Минимальный баланс не может быть больше максимального"
+            );
+        }
+        if (initialBalance > maxBalance) {
+             throw new IllegalArgumentException(
+                    "Начальный баланс не может быть больше максимального"
+             );
+        }
+        if (initialBalance < minBalance) {
+            throw new IllegalArgumentException(
+                    "Начальный баланс не может быть меньше минимального"
+            );
+        }
+        if (minBalance < 0) {
+            throw new IllegalArgumentException(
+                    "Минимальный баланс не может быть отрицательным, а у вас:" + minBalance
             );
         }
         this.balance = initialBalance;
@@ -42,14 +62,14 @@ public class SavingAccount extends Account {
      */
     @Override
     public boolean pay(int amount) {
-        if (amount <= 0) {
+        if (amount < 0) {
             return false;
         }
-        balance = balance - amount;
-        if (balance > minBalance) {
-            return true;
-        } else {
+        else if (balance - amount < minBalance) {
             return false;
+        } else {
+            balance = balance - amount;
+            return true;
         }
     }
 
@@ -66,14 +86,14 @@ public class SavingAccount extends Account {
      */
     @Override
     public boolean add(int amount) {
-        if (amount <= 0) {
+        if (amount < 0) {
             return false;
         }
-        if (balance + amount < maxBalance) {
-            balance = amount;
-            return true;
-        } else {
+        else if (balance + amount > maxBalance) {
             return false;
+        } else {
+            balance = balance + amount;
+            return true;
         }
     }
 
