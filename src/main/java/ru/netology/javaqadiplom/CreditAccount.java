@@ -5,7 +5,7 @@ package ru.netology.javaqadiplom;
  * Может иметь баланс вплоть до отрицательного, но до указанного кредитного лимита.
  * Имеет ставку - количество процентов годовых на сумму на балансе, если она меньше нуля.
  */
-public class CreditAccount extends Account {g
+public class CreditAccount extends Account {
     protected int creditLimit;
 
     /**
