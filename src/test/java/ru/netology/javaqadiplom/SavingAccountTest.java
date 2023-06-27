@@ -220,5 +220,4 @@ public class SavingAccountTest {
 
         Assertions.assertEquals(expected, account.yearChange());
     }   // Точность расчета процентов
-
 }
