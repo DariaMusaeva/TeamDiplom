@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 public class CreditAccountTest {
 
     @Test
-    public void shouldAddToPositiveBalance() {
+    public void shouldAddToEmptyBalance() {
         CreditAccount account = new CreditAccount(
                 0,
                 5_000,
@@ -18,9 +18,8 @@ public class CreditAccountTest {
         Assertions.assertEquals(3_000, account.getBalance());
     }
 
-
     @Test
-    public void shouldNotAddToPositiveBalance() {
+    public void shouldAddToPositiveBalance() {
         CreditAccount account = new CreditAccount(
                 2_000,
                 4_000,
@@ -29,21 +28,8 @@ public class CreditAccountTest {
 
         account.add(3_000);
 
-        Assertions.assertEquals(2_000, account.getBalance());
-    } // не должен менять баланс, если после покупки он выходит за лимит
-
-    @Test
-    public void shouldAddToMaxPositiveBalance() {
-        CreditAccount account = new CreditAccount(
-                2_000,
-                5_000,
-                15
-        );
-
-        account.add(3_000);
-
         Assertions.assertEquals(5_000, account.getBalance());
-    } // должен увеличить баланс до кредитного лимита
+    }
 
     @Test
     public void shouldAddNothingToPositiveBalance() {
@@ -56,20 +42,7 @@ public class CreditAccountTest {
         account.add(0);
 
         Assertions.assertEquals(2_000, account.getBalance());
-    } // не меняет баланс, если покупка = 0
-
-    @Test
-    public void shouldAddNothingToPositiveBalanceIfAmountMoreThanLimit() {
-        CreditAccount account = new CreditAccount(
-                2_000,
-                3_000,
-                15
-        );
-
-        account.add(4_000);
-
-        Assertions.assertEquals(2_000, account.getBalance());
-    } // не должен менять баланс, если изначально покупка больше лимита
+    }
 
     @Test
     public void paymentShouldBeSuccessful() {
@@ -82,20 +55,7 @@ public class CreditAccountTest {
         account.pay(2_000);
 
         Assertions.assertEquals(2_000, account.getBalance());
-    } // списание в рамках лимита не проходит
-
-    @Test
-    public void paymentShouldNotBeSuccessful() {
-        CreditAccount account = new CreditAccount(
-                4_000,
-                15_000,
-                12
-        );
-
-        account.pay(5_000);
-
-        Assertions.assertEquals(-1_000, account.getBalance());
-    } // баланс должен уйти в отрицательное значение
+    }
 
     @Test
     public void paymentShouldBeSuccessfulWithEmptyBalance() {
@@ -105,9 +65,22 @@ public class CreditAccountTest {
                 12
         );
 
-        account.pay(5_000);
+        account.pay(2_000);
 
-        Assertions.assertEquals(-5_000, account.getBalance());
+        Assertions.assertEquals(-2_000, account.getBalance());
+    }
+
+    @Test
+    public void paymentShouldNotBeSuccessful() {
+        CreditAccount account = new CreditAccount(
+                5_000,
+                15_000,
+                12
+        );
+
+        account.pay(25_000);
+
+        Assertions.assertEquals(5_000, account.getBalance());
     }
 
     @Test
@@ -121,7 +94,7 @@ public class CreditAccountTest {
         account.pay(0);
 
         Assertions.assertEquals(15_000, account.getBalance());
-    } // должно пройти нулевое списание
+    }
 
     @Test
     public void paymentShouldBeSuccessfulIfPayAllLimit() {
@@ -131,10 +104,10 @@ public class CreditAccountTest {
                 12
         );
 
-        account.pay(15_000);
+        account.pay(30_000);
 
-        Assertions.assertEquals(0, account.getBalance());
-    } // должен списать весь баланс до 0
+        Assertions.assertEquals(-15_000, account.getBalance());
+    }
 
     @Test
     public void shouldGetCreditLimit() {
@@ -150,22 +123,20 @@ public class CreditAccountTest {
     }
 
     @Test
-    public void shouldNotGetCreditLimitWithNegativeLimit() {
+    public void shouldGetEmptyCreditLimit() {
         CreditAccount account = new CreditAccount(
                 15_000,
-                -15_000,
+                0,
                 12
         );
 
         account.getCreditLimit();
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            account.getCreditLimit();
-        });
-    } // тест не проходит, должно вызываться исключение при отрицательном кредитном лимите
+        Assertions.assertEquals(0, account.getCreditLimit());
+    }
 
     @Test
-    public void shouldNotGetCreditLimitWithEmptyRate() {
+    public void shouldGetCreditLimitWithEmptyRate() {
         CreditAccount account = new CreditAccount(
                 15_000,
                 15_000,
@@ -174,19 +145,42 @@ public class CreditAccountTest {
 
         account.getCreditLimit();
 
+        Assertions.assertEquals(15_000, account.getCreditLimit());
+    }
+
+    @Test
+    public void shouldNotGetNegativeInitialBalance() {
+
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-        account.getCreditLimit();
+            new CreditAccount(-15_000, 15_000, 12);
         });
-    } // тест не проходит, но исключение вызывается при некорректной ставке
+    }
+
+    @Test
+    public void shouldNotGetNegativeLimit() {
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            new CreditAccount(15_000, -15_000, 12);
+        });
+    }
+
+    @Test
+    public void shouldNotGetNegativeRate() {
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            new CreditAccount(-15_000, 15_000, -12);
+        });
+    }
 
     @Test
     public void shouldCalculateRate() {
         CreditAccount account = new CreditAccount(
-                -15_000,
+                15_000,
                 15_000,
                 15
         );
 
+        account.pay(30_000);
         account.yearChange();
 
         Assertions.assertEquals(-2_250, account.yearChange());
@@ -195,33 +189,19 @@ public class CreditAccountTest {
     @Test
     public void shouldCalculateRateWithOtherRate() {
         CreditAccount account = new CreditAccount(
-                -15_000,
+                13_250,
                 15_000,
                 13
         );
 
+        account.pay(14_500);
         account.yearChange();
 
-        Assertions.assertEquals(-1_950, account.yearChange());
+        Assertions.assertEquals(-162, account.yearChange());
     }
 
     @Test
-    public void shouldNotCalculateRateWithNegativeRate() {
-        CreditAccount account = new CreditAccount(
-                -15_000,
-                15_000,
-                -2
-        );
-
-        account.yearChange();
-
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-        account.yearChange();
-        });
-    } // тест не проходит, но исключение вызывается при некорректной ставке
-
-    @Test
-    public void shouldNotCalculateWithPositiveBalance() {
+    public void shouldNotCalculateRateWithPositiveBalance() {
         CreditAccount account = new CreditAccount(
                 15,
                 15_000,
@@ -231,5 +211,19 @@ public class CreditAccountTest {
         account.yearChange();
 
         Assertions.assertEquals(0, account.yearChange());
-    } // ставка не должна рассчитываться при положительном балансе
+    }
+
+    @Test
+    public void shouldNotCalculateRateWithNullRate() {
+        CreditAccount account = new CreditAccount(
+                15,
+                15_000,
+                0
+        );
+
+        account.pay(4_000);
+        account.yearChange();
+
+        Assertions.assertEquals(0, account.yearChange());
+    }
 }
