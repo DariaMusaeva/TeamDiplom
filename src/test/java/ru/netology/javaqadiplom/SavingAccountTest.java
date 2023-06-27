@@ -46,6 +46,17 @@ public class SavingAccountTest {
     }   // Попытка создать отрицательный баланс
 
     @Test
+    public void initialExceptionNegativMinBalance() {
+        minBalance = -1_000;
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+
+            SavingAccount account = new SavingAccount(initialBalance, minBalance, maxBalance, rate);
+        });
+
+    }   // Попытка создать отрицательный баланс
+
+    @Test
     public void initialExceptionNegativeRate() {
         rate = -1;
 
@@ -58,7 +69,7 @@ public class SavingAccountTest {
 
     @Test
     public void initialExceptionLessMinBalance() {
-        initialBalance = minBalance - 2;
+        initialBalance = -2_000;
 
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
 
@@ -121,6 +132,18 @@ public class SavingAccountTest {
     }   // Увеличение баланса счета
 
     @Test
+    public void addAmountLessZero() {
+        if (initialBalance >= maxBalance) maxBalance = initialBalance + 1_000;
+
+        SavingAccount account = new SavingAccount(initialBalance, minBalance, maxBalance, rate);
+
+        boolean expected = false;
+
+        Assertions.assertEquals(expected, account.add(-1));
+    }   // Увеличение баланса счета на отрицательную сумму
+
+
+    @Test
     public void payAmount() {
         if (initialBalance <= minBalance) initialBalance = minBalance + 1_000;
 
@@ -131,6 +154,18 @@ public class SavingAccountTest {
 
         Assertions.assertEquals(expected, account.getBalance());
     }   // Уменьшение баланса счета
+
+    @Test
+    public void payAmountLessZero() {
+        if (initialBalance <= minBalance) initialBalance = minBalance + 1_000;
+
+        SavingAccount account = new SavingAccount(initialBalance, minBalance, maxBalance, rate);
+
+        boolean expected = false;
+
+        Assertions.assertEquals(expected, account.pay(-1));
+    }   // Уменьшение баланса счета на отрицательную сумму
+
 
     @Test
     public void payAmountMoreMinBalance() {
@@ -219,5 +254,18 @@ public class SavingAccountTest {
         int expected = (int) ((double) account.getBalance() / 100 * rate);
 
         Assertions.assertEquals(expected, account.yearChange());
-    }   // Точность расчета процентов
+    }   // Точность расчета процентов по счету
+
+    @Test
+    public void yearPercentZeroBalance() {
+        initialBalance = 0;
+        minBalance = 0;
+        maxBalance = 1_000;
+        rate = 10;
+        SavingAccount account = new SavingAccount(initialBalance, minBalance, maxBalance, rate);
+
+        int expected = 0;
+
+        Assertions.assertEquals(expected, account.yearChange());
+    }   // Расчет процентов при нулевом балансе
 }
