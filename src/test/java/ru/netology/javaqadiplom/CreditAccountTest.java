@@ -117,8 +117,6 @@ public class CreditAccountTest {
                 12
         );
 
-        account.getCreditLimit();
-
         Assertions.assertEquals(15_000, account.getCreditLimit());
     }
 
@@ -130,8 +128,6 @@ public class CreditAccountTest {
                 12
         );
 
-        account.getCreditLimit();
-
         Assertions.assertEquals(0, account.getCreditLimit());
     }
 
@@ -142,8 +138,6 @@ public class CreditAccountTest {
                 15_000,
                 0
         );
-
-        account.getCreditLimit();
 
         Assertions.assertEquals(15_000, account.getCreditLimit());
     }
@@ -168,7 +162,7 @@ public class CreditAccountTest {
     public void shouldNotGetNegativeRate() {
 
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            new CreditAccount(-15_000, 15_000, -12);
+            new CreditAccount(15_000, 15_000, -12);
         });
     }
 
@@ -181,7 +175,6 @@ public class CreditAccountTest {
         );
 
         account.pay(30_000);
-        account.yearChange();
 
         Assertions.assertEquals(-2_250, account.yearChange());
     }
@@ -195,7 +188,6 @@ public class CreditAccountTest {
         );
 
         account.pay(14_500);
-        account.yearChange();
 
         Assertions.assertEquals(-162, account.yearChange());
     }
@@ -207,8 +199,6 @@ public class CreditAccountTest {
                 15_000,
                 15
         );
-
-        account.yearChange();
 
         Assertions.assertEquals(0, account.yearChange());
     }
@@ -222,7 +212,6 @@ public class CreditAccountTest {
         );
 
         account.pay(4_000);
-        account.yearChange();
 
         Assertions.assertEquals(0, account.yearChange());
     }
