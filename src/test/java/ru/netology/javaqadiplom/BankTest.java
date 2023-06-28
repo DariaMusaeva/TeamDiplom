@@ -33,7 +33,7 @@ public class BankTest {
     public void shouldTransferToCredit() {
         Bank bank = new Bank();
 
-        Assertions.assertEquals(true, bank.transfer(save, cred, 999));
+        Assertions.assertEquals(true, bank.transfer(save, cred, 1_000));
     }
 
     @Test
