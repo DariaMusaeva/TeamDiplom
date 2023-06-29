@@ -29,12 +29,12 @@ public class BankTest {
         Assertions.assertEquals(false, bank.transfer(cred, save, 0));
     }
 
-//    @Test
-//    public void shouldTransferToCredit() {
-//        Bank bank = new Bank();
-//
-//        Assertions.assertEquals(true, bank.transfer(save, cred, 1_000));
-//    }
+    @Test
+    public void shouldTransferToCredit() {
+        Bank bank = new Bank();
+
+        Assertions.assertEquals(true, bank.transfer(save, cred, 1_000));
+    }
 
     @Test
     public void shouldNotTransferToCredit() {
